@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/gatling-highcharts-maven-archetype.iml" filepath="$PROJECT_DIR$/gatling-highcharts-maven-archetype.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../TestingGatling/gatling-highcharts-maven-archetype.iml" filepath="$PROJECT_DIR$/../TestingGatling/gatling-highcharts-maven-archetype.iml" />
     </modules>
   </component>
 </project>
