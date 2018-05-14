@@ -18,12 +18,12 @@ class OutboundPhone extends Simulation {
     .exec(agents.getAgentSession("${AgentPhone}","v6.0"))
     .pause(5 seconds)
     //.exec(agents.changeAgentState("Available","duh", "v2.0"))
-    .exec(agents.dialAgentPhone(agents.sessionId,"4005150001", "1151", "v10.0"))
+    .exec(agents.dialAgentPhone(agents.sessionId,"4005150001", loadAgents.outboundPhoneSkill, "v10.0"))
     .pause(50 seconds)
     .exec(agents.endAgentLeg(agents.sessionId, "v2.0"))
     .pause(10)
     .exec(agents.endAgentSession(agents.sessionId, "false", "true", "true", "v10.0"))
-    setUp(outboundPhoneTest.inject(atOnceUsers(1)))
+    //setUp(outboundPhoneTest.inject(atOnceUsers(1)))
 
 
 }

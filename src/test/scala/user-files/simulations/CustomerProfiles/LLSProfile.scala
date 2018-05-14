@@ -2,24 +2,31 @@ package test
 
 import InContactAPI.AdminAPI
 import io.gatling.core.Predef._
-import phone_scenarios.PhoneCallTest
+import phone_scenarios.OutboundPhone
 import workItem_scenarios.WorkItemTest
 import InContactAPI.inContactAuth
+import com.MediaTypes.APITest
 import loadusers.LoadSimulationSetUp
+
+import scala.concurrent.duration._
 
 class LLSProfile extends Simulation {
 
   val workItem = new WorkItemTest
-  val phoneCall = new PhoneCallTest
+  val phoneCall = new OutboundPhone
   val admin = new AdminAPI
   val authToken = new inContactAuth
   val loadAgents = new LoadSimulationSetUp
+  val loginTest = new APITest
 
   val llsWebServiceCall = scenario("WebService Call")
-    .feed(loadAgents.feeder)
-    .exec(authToken.auth_Token_ob.Auth("${UserName}", "${Password}"))
-    .exec(admin.getScript("ThrottleScript1", "v4.0"))
-    .exec(admin.spwanScript(admin.scriptId,"1622","","","v4.0"))
-  setUp(llsWebServiceCall.inject(atOnceUsers(1)), workItem.WorkItemLoadTest.inject(atOnceUsers(10)), phoneCall.inboundPhoneLoadTest.inject(atOnceUsers(0)))
+    //.feed(loadAgents.feeder)
+    //.exec(authToken.auth_Token_ob.Auth("${UserName}", "${Password}"))
+    //.exec(admin.getScript("ThrottleScript1", "v4.0"))
+    //.exec(admin.spwanScript(admin.scriptId,"1622","","","v4.0"))
+  setUp(loginTest.changeState.inject(rampUsers(5000) over (1 minute)))//phoneCall.outboundPhoneTest.inject(rampUsers(600) over (60 seconds)))
+
+  val concurentIbCallswithconferencecalls = scenario("4,200 Agent with 4,000 Concurent IB call with Conferecnet")
+  setUp()
 
 }

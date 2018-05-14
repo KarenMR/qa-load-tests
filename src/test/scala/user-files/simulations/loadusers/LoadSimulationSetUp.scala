@@ -14,7 +14,7 @@ class LoadSimulationSetUp extends Simulation{
     * Set the Cluster value that you would like to run load on
     * i.e SC1, HC15
     */
-  val setCluster = "SC11"
+  val setCluster = "SC1"
 
   /**
     * Global Variables for load application to run
@@ -27,6 +27,7 @@ class LoadSimulationSetUp extends Simulation{
   var chatPOC:String=_
   var workItemPoc:String=_
   var workItemSkillId:String=_
+  var outboundPhoneSkill:String=_
 
   csvFile = new File("src/test/resources/data/".concat(setCluster).concat("LoadAgents.csv")).getAbsolutePath
 
@@ -39,6 +40,7 @@ class LoadSimulationSetUp extends Simulation{
      chatPOC = "f608ef92-a1e7-41e2-bd3d-570a0cee5778"
      workItemPoc =""
      workItemSkillId=""
+     outboundPhoneSkill=""
    case "SC1" =>
      baseURL = "https://api-sc1.ucnlabext.com/"
      phoneSkillId = "165861"
@@ -46,12 +48,14 @@ class LoadSimulationSetUp extends Simulation{
      chatPOC = "f608ef92-a1e7-41e2-bd3d-570a0cee5778"
      workItemPoc =""
      workItemSkillId=""
+     outboundPhoneSkill = "1151"
    case "SC11" =>
      baseURL = "https://api-sc11.ucnlabext.com/"
      phoneSkillId = "1622"
      phoneScriptName ="SpawnInboundPhone"
      workItemPoc = "218417"
      workItemSkillId = "1623"
+     outboundPhoneSkill = "1625"
    case "TO31" =>
    case "SO33" =>
  }

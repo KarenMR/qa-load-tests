@@ -26,12 +26,12 @@ class inContactAuth{
         .body(StringBody("{\n  \"grant_type\": \"password\",\n  \"userName\": \"".concat(userName).concat("\",\n  \"password\": \"").concat(Password).concat("\",\n  \"scope\": \"RealTimeApi ChatApi CustomApi AdminApi AgentApi ReportingApi AuthenticationApi\"\n}"))).asJSON
         .check(status.is(200)).check(jsonPath("$.access_token").exists.saveAs("Access"))
       )
-        .exec(session => {
+       /* .exec(session => {
           println()
           println(Password)
           println(loadSim.baseURL.concat("InContactAuthorizationServer/Token"))
           session
-        })
+        })*/
     }
 
     def incontactHeaders(): Map[String, String] = {

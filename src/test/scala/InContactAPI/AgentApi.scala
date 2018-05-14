@@ -53,13 +53,11 @@ class AgentApi {
           """,
              "ignorePersonalQueue":""").concat(ignorePersonQueue).concat("""}"""))).asJSON
         .check(status.is(202)))
-      .exec(session => {
-        println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId)).toString)
-        session
-      })
+     // .exec(session => {
+      //  println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId)).toString)
+     //   session
+     // })
   }
-
-
   /**
     * Sets Agent State
     *
@@ -69,11 +67,11 @@ class AgentApi {
     * @return status code
     */
   def changeAgentState(state: String, reason: String, version: String): ChainBuilder = {
-    exec(session => {
-      println("{\r\n  \"state\": \"".concat(state).concat("\",\r\n  \"reason\": \"").concat(reason).concat("\"\r\n}"))
-      session
-    })
-      .exec(
+  //  exec(session => {
+    //  println("{\r\n  \"state\": \"".concat(state).concat("\",\r\n  \"reason\": \"").concat(reason).concat("\"\r\n}"))
+     // session
+    //})
+      exec(
       http("Change Agent State")
         .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/".concat(sessionId).concat("/state"))))
         .headers(auther.auth_Token_ob.incontactHeaders())
@@ -82,7 +80,6 @@ class AgentApi {
     )
 
   }
-
   /**
     * Dials Agent Leg
     *
@@ -100,7 +97,6 @@ class AgentApi {
         .body(StringBody("""{"phoneNumber": """.concat(phoneNumber).concat(""","skillId": """.concat(skillId).concat("""}""")))).asJSON
         .check(status.is(202)))
   }
-
   /**
     * end agent leg
     *
@@ -216,5 +212,39 @@ class AgentApi {
     )
 
   }
+
+  /**
+    * Conference Call Api
+    * @param sessionId
+    * @return
+    */
+  def conferenceCall(sessionId: String): ChainBuilder ={
+    exec(
+      http("Conference Call")
+        .post(loadAgents.baseURL.concat("/services/{version}/agent-sessions/".concat(sessionId).concat("/interactions/conference-calls")))
+            .headers(auther.auth_Token_ob.incontactHeaders())
+            .body(StringBody("{}"))
+        .check(status.is(202))
+    )
+
+  }
+  /**
+    * Hold Contact API
+    * @param sessionId
+    * @param contactId
+    * @return
+    */
+  def holdContact (sessionId: String, contactId: String): ChainBuilder ={
+    exec(
+      http("Hold Contact")
+        .post(loadAgents.baseURL.concat("/services/v2.0/agent-sessions/".concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold"))))
+        .body(StringBody("{}"))
+        .check(status.is(200))
+    )
+  }
+
+
+
+
 
 }
