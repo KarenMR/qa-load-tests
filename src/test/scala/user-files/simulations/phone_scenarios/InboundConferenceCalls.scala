@@ -2,6 +2,7 @@ package phone_scenarios
 
 import InContactAPI.{AdminAPI, AgentApi, inContactAuth}
 import io.gatling.core.Predef._
+import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef.{http, jsonPath, status}
 import loadusers.LoadSimulationSetUp
 
@@ -11,7 +12,7 @@ class InboundConferenceCalls {
   val loadAgents = new LoadSimulationSetUp
   val auth = new inContactAuth
 
-  val inboundPhoneConferenceCallLoadTest = scenario("Conference Calls")
+  val inboundPhoneConferenceCallLoadTest: ScenarioBuilder = scenario("Conference Calls")
     .feed(loadAgents.feeder)
     .exec(auth.auth_Token_ob.Auth("${UserName}", "${Password}"))
     .exec(agents.getAgentSession("${AgentPhone}", "v6.0"))
@@ -26,5 +27,8 @@ class InboundConferenceCalls {
         .headers(auth.auth_Token_ob.incontactHeaders())
         .body(StringBody("""{"timeout": "10"}""")).asJSON
         .check(status.is(200)).check(jsonPath("$.events[?(@.ContactId)].ContactId").exists.saveAs("contactId")))
+    .exec(agents.holdContact(agents.sessionId, "${contactId}", "v2.0"))
+    .exec(agents.dialAgentPhone(agents.sessionId, "4005150001", loadAgents.phoneSkillId, "v2.0"))
+    .exec(agents.conferenceCall(agents.sessionId, "v2.0"))
 
 }
