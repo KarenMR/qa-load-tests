@@ -229,10 +229,14 @@ class AgentApi {
   def conferenceCall(sessionId: String, version: String): ChainBuilder ={
     exec(
       http("Conference Call")
-        .post(loadAgents.baseURL.concat("/services/{version}/agent-sessions/".concat(sessionId).concat("/interactions/conference-calls")))
+        .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
             .headers(auther.auth_Token_ob.incontactHeaders())
             .body(StringBody("{}"))
-        .check(status.is(202))
+        .check(status.is(202)))
+        .exec(session => {
+          println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
+          session
+        }
     )
 
   }
@@ -246,10 +250,14 @@ class AgentApi {
   def holdContact (sessionId: String, contactId: String, version: String): ChainBuilder ={
     exec(
       http("Hold Contact")
-        .post(loadAgents.baseURL.concat("/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
+        .post(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("{}"))
-        .check(status.is(200))
+        .check(status.is(202)))
+        .exec(session => {
+          println(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
+          session
+        }
     )
   }
 

@@ -7,7 +7,7 @@ import loadusers.LoadSimulationSetUp
 
 import scala.concurrent.duration._
 
-class OutboundPhone extends Simulation {
+class outboundPhone extends Simulation {
 
   val loadAgents = new LoadSimulationSetUp
   val agents = new AgentApi
@@ -24,7 +24,5 @@ class OutboundPhone extends Simulation {
     .exec(agents.endAgentLeg(agents.sessionId, "v2.0"))
     .pause(10)
     .exec(agents.endAgentSession(agents.sessionId, "false", "true", "true", "v10.0"))
-    setUp(outboundPhoneTest.inject(atOnceUsers(4000)))
-
-
+    setUp(outboundPhoneTest.inject(rampUsers(4000) over (2 minute)))
 }

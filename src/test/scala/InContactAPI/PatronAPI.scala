@@ -22,7 +22,7 @@ class PatronAPI{
   def startChat(pointOfContact: String, version: String): ChainBuilder = {
     exec(
       http("Start Chat")
-        .post(loadAgents1.baseURL.concat("InContactAPI/services/".concat(version).concat("/contacts/chats")))
+        .post(loadAgents1.baseURL.concat("/InContactAPI/services/".concat(version).concat("/contacts/chats")))
         .headers(auths.auth_Token_ob.incontactHeaders())
         //.body(StringBody("""{"pointOfContact":""".concat(pointOfContact).concat("""}"""))).asJSON
         .body(StringBody("{\r\n  \"pointOfContact\": \"".concat(pointOfContact).concat("\"\r\n}"))).asJSON
