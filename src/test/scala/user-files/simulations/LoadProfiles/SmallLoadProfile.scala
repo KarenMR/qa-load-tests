@@ -23,8 +23,8 @@ class SmallLoadProfile extends Simulation {
   val loginAgent = new LoginAgents
   val logoutAgent = new LogOutAgents
 
-  setUp(inboundChat.ChatLoadTest.inject(rampUsers(10) over (10 seconds)))
-
-
-
+  setUp(phoneCallTest.inboundPhoneLoadTest.inject(rampUsers(10) over (10 seconds)),
+    voiceMail.VoiceMailLoadTest.inject(rampUsers(10) over (10 seconds)),
+    outboundEmail.OutboundEmailTest.inject(rampUsers(10) over (10 seconds)),
+    inboundChat.ChatLoadTest.inject(rampUsers(10) over (10 seconds)))
 }
