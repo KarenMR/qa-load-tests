@@ -7,7 +7,7 @@ import loadusers.LoadSimulationSetUp
 import scala.concurrent.duration._
 
 
-class VoiceMail extends Simulation {
+class voicemail extends Simulation {
   val auths = new inContactAuth
   val agents = new AgentApi
   val adminuser = new AdminAPI

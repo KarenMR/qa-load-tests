@@ -2,7 +2,9 @@ package loadusers
 
 import java.io.File
 
+
 import io.gatling.core.Predef._
+import io.gatling.core.feeder.RecordSeqFeederBuilder
 
 
 
@@ -28,19 +30,20 @@ class LoadSimulationSetUp extends Simulation{
   var workItemPoc:String=_
   var workItemSkillId:String=_
   var outboundPhoneSkill:String=_
-
+  var emailSkill:String=_
   csvFile = new File("src/test/resources/data/".concat(setCluster).concat("LoadAgents.csv")).getAbsolutePath
 
 
     setCluster match {
    case "HC15" =>
      baseURL = "http://hc-c15web01/"
-     phoneSkillId = "165861"
+     phoneSkillId = "3034"
      phoneScriptName="SpawnInboundPhone"
-     chatPOC = "f608ef92-a1e7-41e2-bd3d-570a0cee5778"
-     workItemPoc =""
-     workItemSkillId=""
-     outboundPhoneSkill=""
+     chatPOC = "696f61a3-94fb-469d-83cd-4ad157bd7d13"
+     workItemPoc ="1560"
+     workItemSkillId="3035"
+     outboundPhoneSkill="3037"
+     emailSkill="3042"
    case "SC1" =>
      baseURL = "https://api-sc1.ucnlabext.com/"
      phoneSkillId = "165861"
@@ -48,11 +51,11 @@ class LoadSimulationSetUp extends Simulation{
      chatPOC = "f608ef92-a1e7-41e2-bd3d-570a0cee5778"
      workItemPoc =""
      workItemSkillId=""
-     outboundPhoneSkill = "1151"
+     outboundPhoneSkill = "165864"
    case "SC11" =>
      baseURL = "https://api-sc11.ucnlabext.com/"
+     phoneScriptName = "SpawnInboundPhone"
      phoneSkillId = "1622"
-     phoneScriptName ="SpawnInboundPhone"
      workItemPoc = "218417"
      workItemSkillId = "1623"
      outboundPhoneSkill = "1625"
@@ -60,6 +63,6 @@ class LoadSimulationSetUp extends Simulation{
    case "SO33" =>
  }
 
-  val feeder = csv(csvFile).circular
+  val feeder: RecordSeqFeederBuilder[String] = csv(csvFile).circular
 
 }

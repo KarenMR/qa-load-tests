@@ -1,8 +1,10 @@
 package InContactAPI
 
+import akka.Version
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
+import io.gatling.http.request.builder.HttpRequestBuilder
 import loadusers.LoadSimulationSetUp
 
 class AgentApi {
@@ -84,9 +86,9 @@ class AgentApi {
     * Dials Agent Leg
     *
     * @param sessionId session id of the agent
-    * @param phoneNumber
-    * @param skillId
-    * @param version
+    * @param phoneNumber phone number to dial
+    * @param skillId skill id to dial ob contact
+    * @param version version of the api
     * @return
     */
   def dialAgentPhone(sessionId: String, phoneNumber: String, skillId: String, version: String): ChainBuilder = {
@@ -111,6 +113,11 @@ class AgentApi {
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("""{}""")).asJSON
         .check(status.is(202)))
+     .exec(session => {
+      println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId)))
+       session
+     })
+
   }
 
   /**
@@ -215,31 +222,42 @@ class AgentApi {
 
   /**
     * Conference Call Api
-    * @param sessionId
+    * @param sessionId session id of the active agent
+    * @param version Api version
     * @return
     */
-  def conferenceCall(sessionId: String): ChainBuilder ={
+  def conferenceCall(sessionId: String, version: String): ChainBuilder ={
     exec(
       http("Conference Call")
-        .post(loadAgents.baseURL.concat("/services/{version}/agent-sessions/".concat(sessionId).concat("/interactions/conference-calls")))
+        .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
             .headers(auther.auth_Token_ob.incontactHeaders())
             .body(StringBody("{}"))
-        .check(status.is(202))
+        .check(status.is(202)))
+        .exec(session => {
+          println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
+          session
+        }
     )
 
   }
   /**
     * Hold Contact API
-    * @param sessionId
-    * @param contactId
+    * @param sessionId Session Id of the Agent
+    * @param contactId Active Contacts id
+    * @param version Version of the API
     * @return
     */
-  def holdContact (sessionId: String, contactId: String): ChainBuilder ={
+  def holdContact (sessionId: String, contactId: String, version: String): ChainBuilder ={
     exec(
       http("Hold Contact")
-        .post(loadAgents.baseURL.concat("/services/v2.0/agent-sessions/".concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold"))))
+        .post(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
+        .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("{}"))
-        .check(status.is(200))
+        .check(status.is(202)))
+        .exec(session => {
+          println(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
+          session
+        }
     )
   }
 
