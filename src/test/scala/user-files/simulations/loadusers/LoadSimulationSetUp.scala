@@ -60,7 +60,13 @@ class LoadSimulationSetUp extends Simulation{
      workItemSkillId = "1623"
      outboundPhoneSkill = "1625"
    case "TO31" =>
-   case "SO33" =>
+     baseURL = "https://api-to31.test.nice-incontact.com/"
+     phoneScriptName = ""
+     phoneSkillId = ""
+     emailSkill = ""
+     chatPOC = ""
+   case "SO31" =>
+        baseURL ="https://api-so31.staging.nice-incontact.com/InContactAuthorizationServer/"
  }
 
   val feeder: RecordSeqFeederBuilder[String] = csv(csvFile).circular
