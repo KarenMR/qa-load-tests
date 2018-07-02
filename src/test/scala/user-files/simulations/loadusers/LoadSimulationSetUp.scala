@@ -16,7 +16,7 @@ class LoadSimulationSetUp extends Simulation{
     * Set the Cluster value that you would like to run load on
     * i.e SC1, HC15
     */
-  val setCluster = "SC1"
+  val setCluster = "HC15"
 
   /**
     * Global Variables for load application to run
