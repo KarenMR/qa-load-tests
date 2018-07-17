@@ -1,17 +1,21 @@
 package InContactAPI
 
-import akka.Version
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import loadusers.LoadSimulationSetUp
+import scala.collection.mutable.ArrayBuffer
+import Configurations.Helpers
 
 class AgentApi {
 
   val auther = new inContactAuth
   val loadAgents = new LoadSimulationSetUp
   var sessionId: String = _
+  var listOfSessionIDs = new ArrayBuffer[String](5)
+  var listOfSessionIDsNew = new Array[String](2)
+  var helpers = new Helpers
 
   /**
     * Launches Agents session
@@ -21,12 +25,24 @@ class AgentApi {
     * @return sessionID
     */
   def getAgentSession(agentPhone: String, version: String): ChainBuilder = {
+    val url = loadAgents.baseURL.concat("InContactAPI/services/".concat("v2.0").concat("/agent-sessions"))
+    var phone2 = agentPhone
     exec(
       http("Get Session")
-        .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions")))
+        .post(url)
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("{\n  \"stationId\": \"\",\n  \"stationPhoneNumber\": \"".concat(agentPhone).concat("\",\n  \"inactivityTimeout\": \"\",\n  \"asAgentId\": \"\"\n}")))
         .check(status.is(202)).check(jsonPath("$.sessionId").exists.saveAs("sessionId")))
+      .exec(session => {
+        sessionId = session("sessionId").as[String]
+        listOfSessionIDs += sessionId
+        session
+      })
+      .exec(session => {
+      println("These are Session IDs")
+      listOfSessionIDs.foreach(x => println(x))
+      session
+    })
   }
 
   sessionId = "${sessionId}"
@@ -60,6 +76,7 @@ class AgentApi {
      //   session
      // })
   }
+
   /**
     * Sets Agent State
     *
@@ -86,14 +103,16 @@ class AgentApi {
     * Dials Agent Leg
     *
     * @param sessionId session id of the agent
-    * @param phoneNumber phone number to dial
+    * @param phoneNumber1 phone number to dial
     * @param skillId skill id to dial ob contact
     * @param version version of the api
     * @return
     */
-  def dialAgentPhone(sessionId: String, phoneNumber: String, skillId: String, version: String): ChainBuilder = {
+  def dialAgentPhone(sessionId: String, phoneNumber1: String, skillId: String, version: String): ChainBuilder = {
+    var phoneNumber = helpers.getPhone().toString()
+
     exec(
-      http("Dail Phone")
+      http("Dial Phone")
         .post(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat("${sessionId}").concat("/dial-phone"))
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("""{"phoneNumber": """.concat(phoneNumber).concat(""","skillId": """.concat(skillId).concat("""}""")))).asJSON

@@ -2,10 +2,9 @@ package loadusers
 
 import InContactAPI.{AgentApi, inContactAuth, PatronAPI}
 import io.gatling.core.Predef._
-import io.gatling.http.Predef._
-import loadusers.LoadSimulationSetUp
-
-import scala.concurrent.duration._
+//import io.gatling.http.Predef._
+//import loadusers.LoadSimulationSetUp
+//import scala.concurrent.duration._
 
 
 class LogOutAgents extends Simulation {

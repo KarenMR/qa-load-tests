@@ -3,13 +3,13 @@ package LoadProfiles
 import email_scenarios.{inboundEmail, outboundEmail}
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
-import phone_scenarios.{inboundPhone, outboundPhone}
+import phone_scenarios.{inboundPhone, outboundPhoneScenario}
 import voicemail_scenarios.voicemail
 import workItem_scenarios.workItem
 import scala.concurrent.duration._
 
 class ExtraLargeLoadProfile extends Simulation {
-  val outboundPhoneCall = new outboundPhone
+  val outboundPhoneCall = new outboundPhoneScenario
   val inboundPhoneCall = new inboundPhone
   val workItem = new workItem
   val voiceMail = new voicemail
