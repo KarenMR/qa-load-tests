@@ -16,7 +16,7 @@ class LoadSimulationSetUp extends Simulation{
     * Set the Cluster value that you would like to run load on
     * i.e SC1, HC15
     */
-  val setCluster = "SO32"
+  val setCluster = "TO31"
 
   /**
     * Global Variables for load application to run
@@ -63,10 +63,11 @@ class LoadSimulationSetUp extends Simulation{
      outboundPhoneSkill = "1625"
    case "TO31" =>
      baseURL = "https://api-to31.test.nice-incontact.com/"
-     phoneScriptName = ""
-     phoneSkillId = ""
-     emailSkill = ""
-     chatPOC = ""
+     phoneSkillId = "306905"
+     phoneScriptName="SpawnInboundPhone"
+     chatPOC = "59df09a3-5d78-4fb0-b70d-96d81cfc9e7c"
+     outboundPhoneSkill="306906"
+     emailSkill="306907"
    case "SO31" =>
         baseURL ="https://api-so31.staging.nice-incontact.com/InContactAuthorizationServer/"
    case "SO32" =>
