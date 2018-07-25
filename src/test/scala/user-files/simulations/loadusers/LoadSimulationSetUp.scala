@@ -16,7 +16,7 @@ class LoadSimulationSetUp extends Simulation{
     * Set the Cluster value that you would like to run load on
     * i.e SC1, HC15
     */
-  val setCluster = "SC1"
+  val setCluster = "TO31"
 
   /**
     * Global Variables for load application to run
@@ -31,6 +31,8 @@ class LoadSimulationSetUp extends Simulation{
   var workItemSkillId:String=_
   var outboundPhoneSkill:String=_
   var emailSkill:String=_
+  var emailOBSkill:String=_
+
   csvFile = new File("src/test/resources/data/".concat(setCluster).concat("LoadAgents.csv")).getAbsolutePath
 
 
@@ -60,7 +62,21 @@ class LoadSimulationSetUp extends Simulation{
      workItemSkillId = "1623"
      outboundPhoneSkill = "1625"
    case "TO31" =>
-   case "SO33" =>
+     baseURL = "https://api-to31.test.nice-incontact.com/"
+     phoneSkillId = "306905"
+     phoneScriptName="SpawnInboundPhone"
+     chatPOC = "59df09a3-5d78-4fb0-b70d-96d81cfc9e7c"
+     outboundPhoneSkill="306906"
+     emailSkill="306907"
+   case "SO31" =>
+        baseURL ="https://api-so31.staging.nice-incontact.com/InContactAuthorizationServer/"
+   case "SO32" =>
+     baseURL = "https://api-so32.staging.nice-incontact.com/"
+     phoneSkillId = "185200"
+     phoneScriptName="SpawnInboundPhone"
+     chatPOC = "20c69d18-dad6-4bd2-bcc6-c8aba222aa5f"
+     outboundPhoneSkill="204242"
+     emailSkill="204243"
  }
 
   val feeder: RecordSeqFeederBuilder[String] = csv(csvFile).circular

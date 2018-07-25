@@ -11,6 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="scala-sdk-2.12.4" level="application" />
+    <orderEntry type="library" name="scala-sdk-2.12.3" level="application" />
     <orderEntry type="library" scope="TEST" name="Maven: io.gatling.highcharts:gatling-charts-highcharts:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: io.gatling:gatling-charts:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: com.tdunning:t-digest:3.1" level="project" />
