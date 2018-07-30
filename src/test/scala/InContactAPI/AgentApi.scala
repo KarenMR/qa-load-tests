@@ -59,7 +59,7 @@ class AgentApi {
         .check(status.is(200)).check(jsonPath("$.events[1].ContactID").exists.saveAs("ContactID")))
       exec(session=>{
         println("654987")
-        contactId = session("VCHost").as[String]
+        contactId = session("ContactID").as[String]
         println(contactId)
         session})
   }
