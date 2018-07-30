@@ -21,11 +21,14 @@ class outboundPhoneScenario extends Simulation{
     .pause(5 seconds)
     .exec(agents.changeAgentState("Available", "", "v2.0"))
     .pause(10 seconds)
-    .exec(agents.dialAgentPhone(agents.sessionId,"8017155491", loadAgents.outboundPhoneSkill, "v10.0"))
+    .exec(agents.dialAgentPhone(agents.sessionId, loadAgents.outboundPhoneSkill, "v10.0"))
+    .pause(10 seconds)
+    .exec(agents.getContactId())
+    .pause(10 seconds)
+    .exec(agents.callRecord())
     .pause(10 seconds)
     .exec(agents.endAgentLeg(agents.sessionId, "v2.0"))
     .pause(10)
     .exec(agents.endAgentSession(agents.sessionId, "true", "true", "false", "v10.0"))
     .pause(10)
-
 }

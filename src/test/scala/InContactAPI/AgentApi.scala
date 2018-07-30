@@ -7,12 +7,14 @@ import io.gatling.http.request.builder.HttpRequestBuilder
 import loadusers.LoadSimulationSetUp
 import scala.collection.mutable.ArrayBuffer
 import Configurations.Helpers
+import Configurations.Configurations._
 
 class AgentApi {
 
   val auther = new inContactAuth
   val loadAgents = new LoadSimulationSetUp
   var sessionId: String = _
+  var contactId: String = _
   var listOfSessionIDs = new ArrayBuffer[String](5)
   var listOfSessionIDsNew = new Array[String](2)
   var helpers = new Helpers
@@ -46,6 +48,23 @@ class AgentApi {
   }
 
   sessionId = "${sessionId}"
+
+  def getContactId(): ChainBuilder ={
+    val url = loadAgents.baseURL.concat(plusURL.concat(APINextEvent.replace("{sessionId}", sessionId)))
+    exec(
+      http("Get ContactId")
+        .get(url)
+        .headers(auther.auth_Token_ob.incontactHeaders())
+        .body(StringBody("{\n  \"timeout\": \"10\"\n}")).asJSON
+        .check(status.is(200)).check(jsonPath("$.events[1].ContactID").exists.saveAs("ContactID")))
+      exec(session=>{
+        println("654987")
+        contactId = session("VCHost").as[String]
+        println(contactId)
+        session})
+  }
+
+  contactId = "${ContactID}"
 
   /**
     * End Agent Session
@@ -103,12 +122,11 @@ class AgentApi {
     * Dials Agent Leg
     *
     * @param sessionId session id of the agent
-    * @param phoneNumber1 phone number to dial
     * @param skillId skill id to dial ob contact
     * @param version version of the api
     * @return
     */
-  def dialAgentPhone(sessionId: String, phoneNumber1: String, skillId: String, version: String): ChainBuilder = {
+  def dialAgentPhone(sessionId: String, skillId: String, version: String): ChainBuilder = {
     var phoneNumber = helpers.getPhone().toString()
 
     exec(
@@ -118,6 +136,20 @@ class AgentApi {
         .body(StringBody("""{"phoneNumber": """.concat(phoneNumber).concat(""","skillId": """.concat(skillId).concat("""}""")))).asJSON
         .check(status.is(202)))
   }
+
+  def callRecord(): ChainBuilder = {
+    var url = loadAgents.baseURL.concat(plusURL.concat(APICallRecord.replace("{sessionId}", sessionId)).replace("{contactId}", contactId))
+    exec(
+      http("Call Record")
+        .post("")
+        .headers(auther.auth_Token_ob.incontactHeaders())
+        .check(status.is(200))
+    )
+
+
+  }
+
+
   /**
     * end agent leg
     *

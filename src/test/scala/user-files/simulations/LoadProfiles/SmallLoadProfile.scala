@@ -2,7 +2,7 @@ package LoadProfiles
 
 import InContactAPI.AdminAPI
 import io.gatling.core.Predef._
-import phone_scenarios.{inboundPhone, outboundPhone}
+import phone_scenarios.{inboundPhone}
 import workItem_scenarios.workItem
 import InContactAPI.inContactAuth
 import com.MediaTypes.APITest
