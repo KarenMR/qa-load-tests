@@ -49,19 +49,17 @@ class AgentApi {
 
   sessionId = "${sessionId}"
 
-  def getContactId(): ChainBuilder ={
-    val url = loadAgents.baseURL.concat(plusURL.concat(APINextEvent.replace("{sessionId}", sessionId)))
+
+  def getContactId(sessionID : String): ChainBuilder ={
+    val url = loadAgents.baseURL.concat(plusURL.concat(APINextEvent.replace("SESSIONID", sessionID)))
     exec(
       http("Get ContactId")
         .get(url)
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("{\n  \"timeout\": \"10\"\n}")).asJSON
-        .check(status.is(200)).check(jsonPath("$.events[1].ContactID").exists.saveAs("ContactID")))
-      exec(session=>{
-        println("654987")
-        contactId = session("ContactID").as[String]
-        println(contactId)
-        session})
+        .check(status.is(200))
+        .check(jsonPath("$.events[*].ContactID").exists.saveAs("ContactID"))
+    )
   }
 
   contactId = "${ContactID}"
@@ -81,7 +79,6 @@ class AgentApi {
       http("End Agent Session")
         .delete(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId)))
         .headers(auther.auth_Token_ob.incontactHeaders())
-        //.body(StringBody("""{"forceLogoff":""".concat(forceLogOff).Concat(","endContacts":").concat("false","ignorePersonalQueue": "true"}""")).asJSON
         .body(StringBody(
         """{
             "forceLogoff":""".concat(forceLogOff).concat(
@@ -90,10 +87,6 @@ class AgentApi {
           """,
              "ignorePersonalQueue":""").concat(ignorePersonQueue).concat("""}"""))).asJSON
         .check(status.is(202)))
-     // .exec(session => {
-      //  println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId)).toString)
-     //   session
-     // })
   }
 
   /**
@@ -105,10 +98,6 @@ class AgentApi {
     * @return status code
     */
   def changeAgentState(state: String, reason: String, version: String): ChainBuilder = {
-  //  exec(session => {
-    //  println("{\r\n  \"state\": \"".concat(state).concat("\",\r\n  \"reason\": \"").concat(reason).concat("\"\r\n}"))
-     // session
-    //})
       exec(
       http("Change Agent State")
         .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/".concat(sessionId).concat("/state"))))
@@ -116,8 +105,8 @@ class AgentApi {
         .body(StringBody("{\r\n  \"state\": \"".concat(state).concat("\",\r\n  \"reason\": \"").concat(reason).concat("\"\r\n}"))).asJSON
         .check(status.is(202))
     )
-
   }
+
   /**
     * Dials Agent Leg
     *
@@ -137,16 +126,16 @@ class AgentApi {
         .check(status.is(202)))
   }
 
-  def callRecord(): ChainBuilder = {
-    var url = loadAgents.baseURL.concat(plusURL.concat(APICallRecord.replace("{sessionId}", sessionId)).replace("{contactId}", contactId))
+
+  def callRecord(sessionId : String, contactId : String): ChainBuilder = {
+    var url = loadAgents.baseURL.concat(plusURL.concat(APICallRecord.replace("SESSIONID", sessionId)).replace("CONTACTID", contactId))
     exec(
       http("Call Record")
-        .post("")
+        .post(url)
         .headers(auther.auth_Token_ob.incontactHeaders())
-        .check(status.is(200))
-    )
-
-
+        .body(StringBody("{}")).asJSON
+        .check(status.is(202))
+    ).pause(30 )
   }
 
 
@@ -289,8 +278,8 @@ class AgentApi {
           session
         }
     )
-
   }
+
   /**
     * Hold Contact API
     * @param sessionId Session Id of the Agent
@@ -311,9 +300,5 @@ class AgentApi {
         }
     )
   }
-
-
-
-
 
 }

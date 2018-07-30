@@ -3,9 +3,9 @@ package Configurations
 package object Configurations {
 
   //<editor-fold desc="APIs">
-  val plusURL = "InContactAPI/"
-  var APICallRecord = "/services/v2.0/agent-sessions/{sessionId}/interactions/{contactId}/record"
-  var APINextEvent = "/services/v2.0/agent-sessions/{sessionId}/get-next-event"
+  val plusURL = "InContactAPI"
+  var APICallRecord = "/services/v2.0/agent-sessions/SESSIONID/interactions/CONTACTID/record"
+  var APINextEvent = "/services/v2.0/agent-sessions/SESSIONID/get-next-event"
 
   //</editor-fold>
 
