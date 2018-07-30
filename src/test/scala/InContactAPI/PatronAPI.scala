@@ -24,11 +24,12 @@ class PatronAPI{
       http("Start Chat")
         .post(loadAgents1.baseURL.concat("/InContactAPI/services/".concat(version).concat("/contacts/chats")))
         .headers(auths.auth_Token_ob.incontactHeaders())
-        //.body(StringBody("""{"pointOfContact":""".concat(pointOfContact).concat("""}"""))).asJSON
         .body(StringBody("{\r\n  \"pointOfContact\": \"".concat(pointOfContact).concat("\"\r\n}"))).asJSON
-        .check(status.is(202)))
+        .check(status.is(202))
+        .check(jsonPath("$..chatSessionId").saveAs("chatSessionId")))
       .exec(session => {
-        println(body.StringBody("""{"pointOfContact":""".concat(pointOfContact).concat("""}""")))
+        println(body.StringBody("""{"pointOfContact":""".concat(pointOfContact).concat("""}"""))).toString()
+        println("${chatSessionId}").toString()
         session
       })
   }
@@ -40,7 +41,7 @@ class PatronAPI{
         .headers(auths.auth_Token_ob.incontactHeaders())
         .body(StringBody("{}")).asJSON
         .check(status.is(200))
-        .check(jsonPath("$..Text").exists.saveAs("Text"))
+        .check(jsonPath("$..Messages[1].Text").exists.saveAs("Text"))
         .check(jsonPath("$..TimeStamp").exists.saveAs("TimeStamp")))
       .pause(15)
       .exec(session => {
@@ -90,6 +91,18 @@ class PatronAPI{
       .check(status.is(202))
     )
 
+  }
+
+  def patronChatSendText(chatSession: String, label: String, message:String,version:String): ChainBuilder={
+    exec(
+      http("Send Patron Chat Test")
+        .post(loadAgents1.baseURL.concat("InContactAPI/services/").concat(version).concat("/contacts/chats/").concat(chatSession).concat("/send-text"))
+        .headers(auths.auth_Token_ob.incontactHeaders())
+        //.body(StringBody("""{label": """.concat(label).concat(""","message":""").concat(message).concat(""""}""""))).asJSON
+        .body(StringBody("""{"label": """".concat(label).concat("""",  "message": """").concat(message).concat(""""}"""))).asJSON
+
+        .check(status.is(202))
+    )
   }
 
 }

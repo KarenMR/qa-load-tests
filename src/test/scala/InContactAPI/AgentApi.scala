@@ -312,6 +312,16 @@ class AgentApi {
     )
   }
 
+  def sendChat (sessionId: String, contactId: String, chatText:String, version: String) : ChainBuilder ={
+    exec(
+      http("Send Chat Text")
+        .post(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/").concat(contactId).concat("/send-chat-text?chatText=").concat(chatText))
+        .headers(auther.auth_Token_ob.incontactHeaders())
+        .body(StringBody("{}"))
+        .check(status.is(202))
+    )
+  }
+
 
 
 
