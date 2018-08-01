@@ -31,7 +31,7 @@ class LoadSimulationSetUp extends Simulation{
   var workItemSkillId:String=_
   var outboundPhoneSkill:String=_
   var emailSkill:String=_
-  var emailOBSkill:String=_
+  var emailOBSkillId:String=_
 
   csvFile = new File("src/test/resources/data/".concat(setCluster).concat("LoadAgents.csv")).getAbsolutePath
 
@@ -67,7 +67,9 @@ class LoadSimulationSetUp extends Simulation{
      phoneScriptName="SpawnInboundPhone"
      chatPOC = "59df09a3-5d78-4fb0-b70d-96d81cfc9e7c"
      outboundPhoneSkill="306906"
-     emailSkill="306907"
+     emailSkill="306908"
+     emailOBSkillId = "306907"
+
    case "SO31" =>
         baseURL ="https://api-so31.staging.nice-incontact.com/InContactAuthorizationServer/"
    case "SO32" =>
@@ -76,7 +78,8 @@ class LoadSimulationSetUp extends Simulation{
      phoneScriptName="SpawnInboundPhone"
      chatPOC = "20c69d18-dad6-4bd2-bcc6-c8aba222aa5f"
      outboundPhoneSkill="204242"
-     emailSkill="204243"
+     emailSkill="204361"
+     emailOBSkillId = "204362"
  }
 
   val feeder: RecordSeqFeederBuilder[String] = csv(csvFile).circular

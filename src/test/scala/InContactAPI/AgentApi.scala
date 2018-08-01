@@ -49,8 +49,7 @@ class AgentApi {
 
   sessionId = "${sessionId}"
 
-
-  def getContactId(sessionID : String): ChainBuilder ={
+  def getContactId(sessionID : String, contactIdSearch : String = "ContactID"): ChainBuilder ={
     val url = loadAgents.baseURL.concat(plusURL.concat(APINextEvent.replace("SESSIONID", sessionID)))
     exec(
       http("Get ContactId")
@@ -58,7 +57,7 @@ class AgentApi {
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("{\n  \"timeout\": \"10\"\n}")).asJSON
         .check(status.is(200))
-        .check(jsonPath("$.events[*].ContactID").exists.saveAs("ContactID"))
+        .check(jsonPath("$.events[*].".concat(contactIdSearch)).exists.saveAs("ContactID"))
     )
   }
 
@@ -194,6 +193,75 @@ class AgentApi {
         .check(status.is(202)))
   }
 
+
+  /**
+    * Conference Call Api
+    * @param sessionId session id of the active agent
+    * @param version Api version
+    * @return
+    */
+  def conferenceCall(sessionId: String, version: String): ChainBuilder ={
+    exec(
+      http("Conference Call")
+        .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
+            .headers(auther.auth_Token_ob.incontactHeaders())
+            .body(StringBody("{}"))
+        .check(status.is(202)))
+        .exec(session => {
+          println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
+          session
+        }
+    )
+  }
+
+  /**
+    * Hold Contact API
+    * @param sessionId Session Id of the Agent
+    * @param contactId Active Contacts id
+    * @param version Version of the API
+    * @return
+    */
+  def holdContact (sessionId: String, contactId: String, version: String): ChainBuilder ={
+    exec(
+      http("Hold Contact")
+        .post(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
+        .headers(auther.auth_Token_ob.incontactHeaders())
+        .body(StringBody("{}"))
+        .check(status.is(202)))
+        .exec(session => {
+          println(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
+          session
+        }
+    )
+  }
+
+  //<editor-fold desc = EMAIL>
+
+  def createOBEmail(sessionId : String, obEmailSkillID : String): ChainBuilder ={
+    var outBoundEmailAPIUrl = loadAgents.baseURL.concat(plusURL.concat(APIEmailOutbound.replace("SESSIONID", sessionId)))
+    var outBoundEmailBody = "{\n  \"skillId\": \"" + obEmailSkillID + "\",\n  \"toAddress\": \"" + toAddress + "\"\n}"
+
+    exec(
+      http("Create Out Bound Email")
+        .post(outBoundEmailAPIUrl)
+        .headers(auther.auth_Token_ob.incontactHeaders())
+        .body(StringBody(outBoundEmailBody)).asJSON
+        .check(status.is(202))
+    )
+  }
+
+  def sendOBEmail(sessionId : String, contactId : String): ChainBuilder = {
+    var sendObEmailUrl = loadAgents.baseURL.concat(plusURL.concat(APIEmailSend.replace("SESSIONID", sessionId).replace("CONTACTID",contactId)))
+    val newBoddy = boddySendEmail.replace("SKILLID", loadAgents.emailSkill)
+    exec(
+      http("Send Outboud Email")
+        .post(sendObEmailUrl)
+        .headers(auther.auth_Token_ob.incontactHeaders())
+        .body(StringBody(newBoddy)).asJSON
+        .check(status.is(202))
+    )
+  }
+
   /**
     * Create Email API
     *
@@ -260,46 +328,10 @@ class AgentApi {
 
   }
 
-  /**
-    * Conference Call Api
-    * @param sessionId session id of the active agent
-    * @param version Api version
-    * @return
-    */
-  def conferenceCall(sessionId: String, version: String): ChainBuilder ={
-    exec(
-      http("Conference Call")
-        .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
-            .headers(auther.auth_Token_ob.incontactHeaders())
-            .body(StringBody("{}"))
-        .check(status.is(202)))
-        .exec(session => {
-          println(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/conference-calls")))
-          session
-        }
-    )
-  }
+  //</editor-fold>
 
-  /**
-    * Hold Contact API
-    * @param sessionId Session Id of the Agent
-    * @param contactId Active Contacts id
-    * @param version Version of the API
-    * @return
-    */
-  def holdContact (sessionId: String, contactId: String, version: String): ChainBuilder ={
-    exec(
-      http("Hold Contact")
-        .post(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
-        .headers(auther.auth_Token_ob.incontactHeaders())
-        .body(StringBody("{}"))
-        .check(status.is(202)))
-        .exec(session => {
-          println(loadAgents.baseURL.concat("InContactAPI/services/").concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/hold")))
-          session
-        }
-    )
-  }
+
+  //<editor-fold desc = CHAT>
 
   def sendChat (sessionId: String, contactId: String, chatText:String, version: String) : ChainBuilder ={
     exec(
@@ -311,6 +343,7 @@ class AgentApi {
     )
   }
 
+  //</editor-fold>
 
 
 
