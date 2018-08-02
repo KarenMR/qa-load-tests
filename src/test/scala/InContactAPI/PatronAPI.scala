@@ -5,12 +5,13 @@ import io.gatling.core.body
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 import loadusers.LoadSimulationSetUp
+import Configurations.Configurations._
 
 class PatronAPI{
 
   val auths = new inContactAuth
   val loadAgents1 = new LoadSimulationSetUp
-
+  var bodyHtml : String =_
 
   /**
     * Start Patron Chat
@@ -37,7 +38,7 @@ class PatronAPI{
   def chat_transcriptData(): ChainBuilder = {
     exec(
       http("Chat Transcript Data")
-        .post("http://analytics.test.nice-incontact.com:8001/InContactAPI/services/v9.0/contacts/1/chat-transcript")
+        .post(APIChatTranscript)
         .headers(auths.auth_Token_ob.incontactHeaders())
         .body(StringBody("{}")).asJSON
         .check(status.is(200))
@@ -55,7 +56,7 @@ class PatronAPI{
   def email_transcriptData(): ChainBuilder = {
     exec(
       http("Email Transcript Data")
-        .post("http://analytics.test.nice-incontact.com:8001/InContactAPI/services/v9.0/contacts/1/email-transcript")
+        .post(APIEmailTranscript)
         .headers(auths.auth_Token_ob.incontactHeaders())
         .body(StringBody("{}")).asJSON
         .check(status.is(200))
@@ -77,6 +78,8 @@ class PatronAPI{
         session
       }).pause(10)
   }
+
+  bodyHtml =  "${bodyHtml}"
 
   def createWorkItem(pointOfContact: String, workItemId: String, workItemPayLoad: String, workItemType: String, from: String, version: String): ChainBuilder = {
     exec(session => {

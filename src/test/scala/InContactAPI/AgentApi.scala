@@ -49,6 +49,7 @@ class AgentApi {
 
   sessionId = "${sessionId}"
 
+  
   def getContactId(sessionID : String, contactIdSearch : String = "ContactID"): ChainBuilder ={
     val url = loadAgents.baseURL.concat(plusURL.concat(APINextEvent.replace("SESSIONID", sessionID)))
     exec(
@@ -73,7 +74,7 @@ class AgentApi {
     * @param version           version of api
     * @return
     */
-  def endAgentSession(sessionId: String, forceLogOff: String, endContact: String, ignorePersonQueue: String, version: String): ChainBuilder = {
+  def endAgentSession(sessionId: String, forceLogOff: String = "true", endContact: String = "true", ignorePersonQueue: String= "false", version: String = "V10.0"): ChainBuilder = {
     exec(
       http("End Agent Session")
         .delete(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId)))
@@ -250,15 +251,25 @@ class AgentApi {
     )
   }
 
-  def sendOBEmail(sessionId : String, contactId : String): ChainBuilder = {
+  def sendOBEmail(sessionId : String, contactId : String, bodyMessage: String = "Test From Load"): ChainBuilder = {
     var sendObEmailUrl = loadAgents.baseURL.concat(plusURL.concat(APIEmailSend.replace("SESSIONID", sessionId).replace("CONTACTID",contactId)))
-    val newBoddy = boddySendEmail.replace("SKILLID", loadAgents.emailSkill)
+    val newBoddy = boddySendEmail.replace("SKILLID", loadAgents.emailSkill).replace("MESSAGE", bodyMessage)
     exec(
       http("Send Outboud Email")
         .post(sendObEmailUrl)
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody(newBoddy)).asJSON
         .check(status.is(202))
+    )
+  }
+
+  def getTransciptEmail(): ChainBuilder = {
+    val transcriptEmailURL = loadAgents.baseURL.concat(plusURL)
+
+    exec(
+      http("Get Transcript Email")
+        .post(transcriptEmailURL)
+
     )
   }
 

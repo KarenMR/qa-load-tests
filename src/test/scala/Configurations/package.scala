@@ -3,20 +3,23 @@ package Configurations
 package object Configurations {
 
   //<editor-fold desc="APIs">
+
   val plusURL = "InContactAPI"
   var APICallRecord = "/services/v2.0/agent-sessions/SESSIONID/interactions/CONTACTID/record"
   var APINextEvent = "/services/v2.0/agent-sessions/SESSIONID/get-next-event"
   var APIEmailOutbound = "/services/v4.0/agent-sessions/SESSIONID/interactions/email-outbound"
   var APIEmailSend = "/services/v4.0/agent-sessions/SESSIONID/interactions/CONTACTID/email-send"
+  var APIEmailTranscript = "http://analytics.test.nice-incontact.com:8001/InContactAPI/services/v9.0/contacts/1/email-transcript"
+  var APIChatTranscript = "http://analytics.test.nice-incontact.com:8001/InContactAPI/services/v9.0/contacts/1/chat-transcript"
 
   //</editor-fold>
 
   //<editor-fold desc="General">
 
   val toAddress = "test@niceincontact.com"
+
   val fromAddress = "test@test.com"
-  val subject = "Test Subject from {cluster}"
-  val boddy = "This is a test Boddy from {cluster}"
+  val subject = "Test Subject from CLUSTER"
 
   val incontact_header_Token = "aW50ZXJuYWxAaW5Db250YWN0IEluYy46UVVFNVFrTkdSRE0zUWpFME5FUkRSamczUlVORFJVTkRRakU0TlRrek5UYz0="
 
@@ -25,10 +28,13 @@ package object Configurations {
   }
 
   var listOfPhones = Array[(Boolean,String)]((true,"9990370004"),(true, "9990370008"),(true,"9990370010"),(true, "9990370013"))
+  //var listOfPhones = Array[(Boolean,String)]((true,"8017155491"),(true, "8017155440"),(true,"9990370010"),(true, "9990370013"))
 
   //</editor-fold>
 
   //<editor-fold desc = "Bodies">
+
+  val boddy = "This is a test Body Message: MESSAGE"
 
   val boddySendEmail = "{\n  \"skillId\": \"SKILLID\",\n  " +
     "\"toAddress\": \"" + toAddress + "\",\n  " +
