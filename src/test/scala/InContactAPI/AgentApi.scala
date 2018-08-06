@@ -115,8 +115,8 @@ class AgentApi {
     * @param version version of the api
     * @return
     */
-  def dialAgentPhone(sessionId: String, skillId: String, version: String): ChainBuilder = {
-    var phoneNumber = helpers.getPhone().toString()
+  def dialAgentPhone(sessionId: String, skillId: String, phoneNumber: String, version: String): ChainBuilder = {
+   // var phoneNumber = helpers.getPhone().toString()
 
     exec(
       http("Dial Phone")
