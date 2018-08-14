@@ -55,13 +55,15 @@ class PatronAPI{
         .check(status.is(200))
         .check(jsonPath("$..Messages[1].Text").exists.saveAs("Text"))
         .check(jsonPath("$..TimeStamp").exists.saveAs("TimeStamp")))
-      .pause(30)
+      .pause(8)
+      /*
       .exec(session => {
         println("33333")
         println("Session Status: " + (session("Text").as[String]))
         println("Time Stamp: " + (session("TimeStamp").as[String]))
         session
       })
+      */
   }
 
   def email_transcriptData(): ChainBuilder = {
@@ -108,15 +110,19 @@ class PatronAPI{
   }
 
   def patronChatSendText(chatSession: String, label: String, message:String,version:String): ChainBuilder={
+    var chatSendTextUrl = loadAgents1.baseURL.concat(plusURL.concat(APIChatsSendText).replace("CHATSESSION", chatSession))
+    var jsBody = "{\n  \"label\": \""+ label +"\",\n  \"message\": \""+ message +"\"\n}"
     exec(
       http("Send Patron Chat Test")
-        .post(loadAgents1.baseURL.concat("InContactAPI/services/").concat(version).concat("/contacts/chats/").concat(chatSession).concat("/send-text"))
+        //.post(loadAgents1.baseURL.concat("InContactAPI/services/").concat(version).concat("/contacts/chats/").concat(chatSession).concat("/send-text"))
+        .post(chatSendTextUrl)
         .headers(auths.auth_Token_ob.incontactHeaders())
         //.body(StringBody("""{label": """.concat(label).concat(""","message":""").concat(message).concat(""""}""""))).asJSON
-        .body(StringBody("""{"label": """".concat(label).concat("""",  "message": """").concat(message).concat(""""}"""))).asJSON
+        //.body(StringBody("""{"label": """".concat(label).concat("""",  "message": """").concat(message).concat(""""}"""))).asJSON
+          .body(StringBody(jsBody)).asJSON
         .check(status.is(202))
     )
-      .pause(30 seconds)
+      .pause(10 seconds)
   }
 
 }

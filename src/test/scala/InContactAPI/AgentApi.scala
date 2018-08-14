@@ -178,7 +178,7 @@ class AgentApi {
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("""{}""")).asJSON
         .check(status.is(202)))
-      .pause(20 second)
+      .pause(10 second)
   }
 
   /**
@@ -196,7 +196,7 @@ class AgentApi {
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("""{}""")).asJSON
         .check(status.is(202)))
-      .pause(10 seconds)
+      .pause(5 seconds)
   }
 
 
@@ -357,7 +357,7 @@ class AgentApi {
         .body(StringBody("{}"))
         .check(status.is(202))
     )
-      .pause(10 second)
+      .pause(5 second)
   }
 
   //</editor-fold>

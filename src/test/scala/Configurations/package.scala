@@ -13,6 +13,7 @@ package object Configurations {
   var APIChatTranscript = "http://analytics.test.nice-incontact.com:8001/InContactAPI/services/v9.0/contacts/1/chat-transcript"
   var APIAcceptContact = "/services/v10.0/agent-sessions/SESSIONID/interactions/CONTACTID/accept"
   var APIChats = "/services/v9.0/contacts/chats"
+  var APIChatsSendText = "/services/v10.0/contacts/chats/CHATSESSION/send-text"
 
   //</editor-fold>
 
