@@ -28,7 +28,7 @@ class InboundConferenceCalls {
         .body(StringBody("""{"timeout": "10"}""")).asJSON
         .check(status.is(200)).check(jsonPath("$.events[?(@.ContactId)].ContactId").exists.saveAs("contactId")))
     .exec(agents.holdContact(agents.sessionId, "${contactId}", "v2.0"))
-    .exec(agents.dialAgentPhone(agents.sessionId, loadAgents.phoneSkillId, "v2.0"))
+    //.exec(agents.dialAgentPhone(agents.sessionId, loadAgents.phoneSkillId, "v2.0"))
     .exec(agents.conferenceCall(agents.sessionId, "v2.0"))
 
 }

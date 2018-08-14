@@ -4,13 +4,15 @@ package object Configurations {
 
   //<editor-fold desc="APIs">
 
-  val plusURL = "InContactAPI"
+  val plusURL = "inContactAPI"
   var APICallRecord = "/services/v2.0/agent-sessions/SESSIONID/interactions/CONTACTID/record"
   var APINextEvent = "/services/v2.0/agent-sessions/SESSIONID/get-next-event"
   var APIEmailOutbound = "/services/v4.0/agent-sessions/SESSIONID/interactions/email-outbound"
   var APIEmailSend = "/services/v4.0/agent-sessions/SESSIONID/interactions/CONTACTID/email-send"
   var APIEmailTranscript = "http://analytics.test.nice-incontact.com:8001/InContactAPI/services/v9.0/contacts/1/email-transcript"
   var APIChatTranscript = "http://analytics.test.nice-incontact.com:8001/InContactAPI/services/v9.0/contacts/1/chat-transcript"
+  var APIAcceptContact = "/services/v10.0/agent-sessions/SESSIONID/interactions/CONTACTID/accept"
+  var APIChats = "/services/v9.0/contacts/chats"
 
   //</editor-fold>
 

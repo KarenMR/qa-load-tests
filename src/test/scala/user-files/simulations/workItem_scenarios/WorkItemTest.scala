@@ -43,7 +43,7 @@ class WorkItemTest extends Simulation {
           println(session("contactId").as[String])
           session
         })
-   .exec(agents.acceptContact(agents.sessionId, "${contactId}", "v4.0"))
+   .exec(agents.acceptContact(agents.sessionId, "${contactId}"))
    .pause(20)
    .exec(agents.endContact(agents.sessionId, "${contactId}", "v2.0"))
    .pause(4)

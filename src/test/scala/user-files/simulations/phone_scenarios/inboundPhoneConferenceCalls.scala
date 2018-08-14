@@ -30,7 +30,7 @@ class inboundPhoneConferenceCalls {
         .check(status.is(200)).check(jsonPath("$.events[?(@.ContactID)].ContactID").exists.saveAs("contactId")))
     .exec(agents.holdContact(agents.sessionId, "${contactId}", "v2.0"))
       .pause(2 seconds)
-    .exec(agents.dialAgentPhone(agents.sessionId, loadAgents.outboundPhoneSkill, "v10.0"))
+    //.exec(agents.dialAgentPhone(agents.sessionId, loadAgents.outboundPhoneSkill, "v10.0"))
     .pause(30 seconds)
     .exec(agents.conferenceCall(agents.sessionId, "v2.0"))
     .pause(10 minutes)

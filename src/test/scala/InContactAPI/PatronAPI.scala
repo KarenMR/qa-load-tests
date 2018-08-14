@@ -6,12 +6,14 @@ import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 import loadusers.LoadSimulationSetUp
 import Configurations.Configurations._
+import scala.concurrent.duration._
 
 class PatronAPI{
 
   val auths = new inContactAuth
   val loadAgents1 = new LoadSimulationSetUp
-  var bodyHtml : String =_
+  var bodyHtml : String = _
+  var chatSessionId : String = _
 
   /**
     * Start Patron Chat
@@ -21,19 +23,28 @@ class PatronAPI{
     * @return
     */
   def startChat(pointOfContact: String, version: String): ChainBuilder = {
+    val chatsUrl = loadAgents1.baseURL.concat(plusURL.concat(APIChats))
+    var jsBody = "{\n  \"pointOfContact\": \""+ pointOfContact +"\"\n}"
     exec(
       http("Start Chat")
-        .post(loadAgents1.baseURL.concat("/InContactAPI/services/".concat(version).concat("/contacts/chats")))
+        //.post(loadAgents1.baseURL.concat("/InContactAPI/services/".concat(version).concat("/contacts/chats")))
+        .post(chatsUrl)
         .headers(auths.auth_Token_ob.incontactHeaders())
-        .body(StringBody("{\r\n  \"pointOfContact\": \"".concat(pointOfContact).concat("\"\r\n}"))).asJSON
+        .body(StringBody(jsBody)).asJSON
+        //.body(StringBody("{\r\n  \"pointOfContact\": \"".concat(pointOfContact).concat("\"\r\n}"))).asJSON
         .check(status.is(202))
-        .check(jsonPath("$..chatSessionId").saveAs("chatSessionId")))
+        //chatSessionId
+        //.check(jsonPath("$..chatSessionId").saveAs("chatSessionId")))
+        .check(jsonPath("$.chatSessionId").saveAs("ChatSessionId")))
+      /*
       .exec(session => {
         println(body.StringBody("""{"pointOfContact":""".concat(pointOfContact).concat("""}"""))).toString()
-        println("${chatSessionId}").toString()
+        println("${ChatSessionId}").toString()
         session
-      })
+      })*/
   }
+
+  chatSessionId = "${ChatSessionId}"
 
   def chat_transcriptData(): ChainBuilder = {
     exec(
@@ -44,7 +55,7 @@ class PatronAPI{
         .check(status.is(200))
         .check(jsonPath("$..Messages[1].Text").exists.saveAs("Text"))
         .check(jsonPath("$..TimeStamp").exists.saveAs("TimeStamp")))
-      .pause(15)
+      .pause(30)
       .exec(session => {
         println("33333")
         println("Session Status: " + (session("Text").as[String]))
@@ -103,9 +114,9 @@ class PatronAPI{
         .headers(auths.auth_Token_ob.incontactHeaders())
         //.body(StringBody("""{label": """.concat(label).concat(""","message":""").concat(message).concat(""""}""""))).asJSON
         .body(StringBody("""{"label": """".concat(label).concat("""",  "message": """").concat(message).concat(""""}"""))).asJSON
-
         .check(status.is(202))
     )
+      .pause(30 seconds)
   }
 
 }

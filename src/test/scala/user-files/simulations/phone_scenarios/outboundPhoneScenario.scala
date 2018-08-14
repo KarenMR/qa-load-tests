@@ -5,7 +5,6 @@ import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import loadusers.LoadSimulationSetUp
 import Configurations.Configurations._
-
 import scala.concurrent.duration._
 
 class outboundPhoneScenario extends Simulation{

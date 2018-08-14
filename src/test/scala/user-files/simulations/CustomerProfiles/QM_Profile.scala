@@ -13,13 +13,13 @@ class QM_Profile extends Simulation{
   val obPhoneCall =  new outboundPhoneScenario
   //val qm_chat = new QM_InBoundChat
   //val qm_email =  new QM_InBoundEmailTest
-  val obEmail = new obEmailScenario
+  //val obEmail = new obEmailScenario
 
   val qmenv : ScenarioBuilder = scenario("QM Analytics")
 
   //<editor-fold desc = "Execute one by one (Recommended)">
 
-  setUp(obPhoneCall.outboundPhoneTest.inject(rampUsers(5) over (10 seconds)))  //Phone call
+  setUp(obPhoneCall.outboundPhoneTest.inject(rampUsers(4) over (4 seconds)))  //Phone call
   //setUp(qm_chat.QmChatLoadTest.inject(rampUsers(1) over (1 seconds))) //Chat
  // setUp(obEmail.outboundEmailTest.inject(rampUsers(2)over(2 seconds))) //Email
 

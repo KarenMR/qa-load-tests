@@ -8,6 +8,7 @@ import loadusers.LoadSimulationSetUp
 import scala.collection.mutable.ArrayBuffer
 import Configurations.Helpers
 import Configurations.Configurations._
+import scala.concurrent.duration._
 
 class AgentApi {
 
@@ -35,6 +36,7 @@ class AgentApi {
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("{\n  \"stationId\": \"\",\n  \"stationPhoneNumber\": \"".concat(agentPhone).concat("\",\n  \"inactivityTimeout\": \"\",\n  \"asAgentId\": \"\"\n}")))
         .check(status.is(202)).check(jsonPath("$.sessionId").exists.saveAs("sessionId")))
+      .pause(20 seconds)
       .exec(session => {
         sessionId = session("sessionId").as[String]
         listOfSessionIDs += sessionId
@@ -87,6 +89,7 @@ class AgentApi {
           """,
              "ignorePersonalQueue":""").concat(ignorePersonQueue).concat("""}"""))).asJSON
         .check(status.is(202)))
+      .pause(5 second)
   }
 
   /**
@@ -165,16 +168,17 @@ class AgentApi {
     *
     * @param sessionId sessiond id of the agent
     * @param contactId contact id the agent is handling
-    * @param version   version of the api
     * @return
     */
-  def acceptContact(sessionId: String, contactId: String, version: String): ChainBuilder = {
+  def acceptContact(sessionId: String, contactId: String): ChainBuilder = {
+    var acceptContactUrl = loadAgents.baseURL.concat(plusURL.concat(APIAcceptContact.replace("SESSIONID", sessionId).replace("CONTACTID", contactId)))
     exec(
       http("Accept Contact")
-        .post(loadAgents.baseURL.concat("InContactAPI/services/".concat(version).concat("/agent-sessions/").concat(sessionId).concat("/interactions/".concat(contactId).concat("/accept"))))
+        .post(acceptContactUrl)
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("""{}""")).asJSON
         .check(status.is(202)))
+      .pause(20 second)
   }
 
   /**
@@ -192,6 +196,7 @@ class AgentApi {
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody("""{}""")).asJSON
         .check(status.is(202)))
+      .pause(10 seconds)
   }
 
 
@@ -352,6 +357,7 @@ class AgentApi {
         .body(StringBody("{}"))
         .check(status.is(202))
     )
+      .pause(10 second)
   }
 
   //</editor-fold>

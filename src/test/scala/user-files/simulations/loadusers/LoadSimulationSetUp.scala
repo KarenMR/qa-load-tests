@@ -16,7 +16,9 @@ class LoadSimulationSetUp extends Simulation{
     * Set the Cluster value that you would like to run load on
     * i.e SC1, HC15
     */
-  val setCluster = "TO31"
+  //val setCluster = "TO31"
+  //val setCluster = "SO32"
+  val setCluster = "SO32PermTargeted"
 
   /**
     * Global Variables for load application to run
@@ -69,7 +71,6 @@ class LoadSimulationSetUp extends Simulation{
      outboundPhoneSkill="306906"
      emailSkill="306908"
      emailOBSkillId = "306907"
-
    case "SO31" =>
         baseURL ="https://api-so31.staging.nice-incontact.com/InContactAuthorizationServer/"
    case "SO32" =>
@@ -80,6 +81,14 @@ class LoadSimulationSetUp extends Simulation{
      outboundPhoneSkill="204242"
      emailSkill="204361"
      emailOBSkillId = "204362"
+   case "SO32PermTargeted" =>
+     baseURL = "https://api-so32.staging.nice-incontact.com/"
+     phoneSkillId = "204411"
+     phoneScriptName="SpawnInboundPhone"
+     chatPOC = "e6543332-44cb-4c38-906c-d7c0d914d9ab"
+     outboundPhoneSkill="204408 "
+     emailSkill="204410"
+     emailOBSkillId = "204409"
  }
 
   val feeder: RecordSeqFeederBuilder[String] = csv(csvFile).circular
