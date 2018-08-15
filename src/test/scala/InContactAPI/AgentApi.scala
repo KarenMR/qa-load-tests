@@ -264,8 +264,8 @@ class AgentApi {
         .post(sendObEmailUrl)
         .headers(auther.auth_Token_ob.incontactHeaders())
         .body(StringBody(newBoddy)).asJSON
-        .check(status.is(202))
-    )
+        .check(status.is(202)))
+      .pause(10 second)
   }
 
   def getTransciptEmail(): ChainBuilder = {

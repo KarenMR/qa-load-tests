@@ -79,7 +79,8 @@ class PatronAPI{
         .check(jsonPath("$..toAddress").exists.saveAs("toAddress"))
         .check(jsonPath("$..subject").exists.saveAs("subject"))
         .check(jsonPath("$..bodyHtml").exists.saveAs("bodyHtml")))
-      .pause(15)
+      .pause(35)
+      /*
       .exec(session => {
         println("44444")
         println("Email TypeId: " + (session("emailTypeId").as[String]))
@@ -89,7 +90,7 @@ class PatronAPI{
         println("Subject: " + (session("subject").as[String]))
         println("Body Html: " + (session("bodyHtml").as[String]))
         session
-      }).pause(10)
+      }).pause(10)*/
   }
 
   bodyHtml =  "${bodyHtml}"

@@ -26,10 +26,12 @@ class obEmailScenario extends Simulation{
     .pause(10 seconds)
     .exec(agents.getContactId(agents.sessionId, "ContactId"))
     .pause(10 seconds)
+    /*
     .exec(patronAPI.email_transcriptData())
     .pause(60 seconds)
-    .exec(agents.sendOBEmail(agents.sessionId, agents.contactId, patronAPI.bodyHtml))
-    //    .exec(agents.sendOBEmail(agents.sessionId, agents.contactId))
+    */
+    //.exec(agents.sendOBEmail(agents.sessionId, agents.contactId, patronAPI.bodyHtml))
+    .exec(agents.sendOBEmail(agents.sessionId, agents.contactId))
     .pause(10 seconds)
     .exec(agents.endAgentSession(agents.sessionId))
     .pause(10 seconds)
