@@ -80,8 +80,8 @@ class PatronAPI{
         .check(jsonPath("$..subject").exists.saveAs("subject"))
         .check(jsonPath("$..bodyHtml").exists.saveAs("bodyHtml")))
       .pause(35)
-      /*
-      .exec(session => {
+
+      /*.exec(session => {
         println("44444")
         println("Email TypeId: " + (session("emailTypeId").as[String]))
         println("Sent Date: " + (session("sentDate").as[String]))

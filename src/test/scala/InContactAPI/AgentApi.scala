@@ -258,7 +258,7 @@ class AgentApi {
 
   def sendOBEmail(sessionId : String, contactId : String, bodyMessage: String = "Test From Load"): ChainBuilder = {
     var sendObEmailUrl = loadAgents.baseURL.concat(plusURL.concat(APIEmailSend.replace("SESSIONID", sessionId).replace("CONTACTID",contactId)))
-    val newBoddy = boddySendEmail.replace("SKILLID", loadAgents.emailSkill).replace("MESSAGE", bodyMessage)
+    val newBoddy = boddySendEmail.replace("SKILLID", loadAgents.emailOBSkillId).replace("MESSAGE", bodyMessage)
     exec(
       http("Send Outboud Email")
         .post(sendObEmailUrl)
