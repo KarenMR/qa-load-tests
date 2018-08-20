@@ -19,9 +19,8 @@ package object Configurations {
 
   //<editor-fold desc="General">
 
-  val toAddress = "test@niceincontact.com"
-
-  val fromAddress = "test@test.com"
+  val toAddress = "amir.cohen@nice.com"
+  val fromAddress = "dontreply@barak.com"
   val subject = "Test Subject from CLUSTER"
 
   val incontact_header_Token = "aW50ZXJuYWxAaW5Db250YWN0IEluYy46UVVFNVFrTkdSRE0zUWpFME5FUkRSamczUlVORFJVTkRRakU0TlRrek5UYz0="

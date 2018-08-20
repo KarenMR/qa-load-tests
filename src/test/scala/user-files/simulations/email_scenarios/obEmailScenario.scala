@@ -15,7 +15,7 @@ class obEmailScenario extends Simulation{
   val patronAPI = new PatronAPI
   val token1 = incontact_header_Token
 
-  val outboundEmailTest: ScenarioBuilder = scenario("Outbound Phone Test")
+  val outboundEmailTest: ScenarioBuilder = scenario("Outbound Email Test")
     .feed(loadAgents.feeder)
     .exec(auth.auth_Token_ob.Auth("${UserName}", "${Password}"))
     .exec(agents.getAgentSession("${AgentPhone}","v2.0"))
@@ -26,10 +26,10 @@ class obEmailScenario extends Simulation{
     .pause(5 seconds)
     .exec(agents.getContactId(agents.sessionId, "ContactId"))
     .pause(5 seconds)
-    .exec(patronAPI.email_transcriptData())
-    .pause(60 seconds)
-    .exec(agents.sendOBEmail(agents.sessionId, agents.contactId, patronAPI.bodyHtml))
-    //.exec(agents.sendOBEmail(agents.sessionId, agents.contactId))
+    //.exec(patronAPI.email_transcriptData())
+    //.pause(60 seconds)
+    //.exec(agents.sendOBEmail(agents.sessionId, agents.contactId, patronAPI.bodyHtml))
+    .exec(agents.sendOBEmail(agents.sessionId, agents.contactId))
     .pause(10 seconds)
     .exec(agents.endAgentSession(agents.sessionId))
     .pause(10 seconds)

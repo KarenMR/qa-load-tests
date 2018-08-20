@@ -88,8 +88,10 @@ class LoadSimulationSetUp extends Simulation{
      chatPOC = "e6543332-44cb-4c38-906c-d7c0d914d9ab"
      outboundPhoneSkill="204408 "
      emailSkill="204410"
-     emailOBSkillId = "204409"
- }
+     //emailOBSkillId = "204409" //LoadOBEmail
+     emailOBSkillId = "204402" //Barak_OB_email
+
+    }
 
   val feeder: RecordSeqFeederBuilder[String] = csv(csvFile).circular
 

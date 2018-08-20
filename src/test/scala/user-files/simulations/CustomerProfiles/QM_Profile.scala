@@ -19,9 +19,9 @@ class QM_Profile extends Simulation{
 
   //<editor-fold desc = "Execute one by one (Recommended)">
 
-  //setUp(obPhoneCall.outboundPhoneTest.inject(rampUsers(4) over (4 seconds)))  //Phone call
-  //setUp(qm_chat.QmChatLoadTest.inject(rampUsers(50) over (50 seconds))) //Chat
-  setUp(obEmail.outboundEmailTest.inject(rampUsers(4)over(4 seconds))) //Email
+  //setUp(obPhoneCall.outboundPhoneTest.inject(rampUsers(200) over (200 seconds)))  //Phone call
+  //setUp(qm_chat.QmChatLoadTest.inject(rampUsers(200) over (200 seconds))) //Chat
+  setUp(obEmail.outboundEmailTest.inject(rampUsers(100)over(100 seconds))) //Email
 
   //</editor-fold>
 
