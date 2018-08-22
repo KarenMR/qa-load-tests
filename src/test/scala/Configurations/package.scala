@@ -19,7 +19,7 @@ package object Configurations {
 
   //<editor-fold desc="General">
 
-  val toAddress = "amir.cohen@nice.com"
+  val toAddress = "test@test.com"
   val fromAddress = "dontreply@barak.com"
   val subject = "Test Subject from CLUSTER"
 

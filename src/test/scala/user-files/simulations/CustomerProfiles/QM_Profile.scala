@@ -21,7 +21,7 @@ class QM_Profile extends Simulation{
 
   //setUp(obPhoneCall.outboundPhoneTest.inject(rampUsers(200) over (200 seconds)))  //Phone call
   //setUp(qm_chat.QmChatLoadTest.inject(rampUsers(200) over (200 seconds))) //Chat
-  setUp(obEmail.outboundEmailTest.inject(rampUsers(100)over(100 seconds))) //Email
+  setUp(obEmail.outboundEmailTest.inject(rampUsers(200)over(200 seconds))) //Email
 
   //</editor-fold>
 
