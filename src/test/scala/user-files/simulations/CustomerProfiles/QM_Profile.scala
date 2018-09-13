@@ -10,18 +10,18 @@ import email_scenarios.outboundEmail
 import scala.concurrent.duration._
 
 class QM_Profile extends Simulation{
-  //val obPhoneCall =  new outboundPhoneScenario
+  val obPhoneCall =  new outboundPhoneScenario
   //val qm_chat = new QM_InBoundChat
+  //val obEmail = new obEmailScenario
   //val qm_email =  new QM_InBoundEmailTest
-  val obEmail = new obEmailScenario
 
   val qmenv : ScenarioBuilder = scenario("QM Analytics")
 
   //<editor-fold desc = "Execute one by one (Recommended)">
 
-  //setUp(obPhoneCall.outboundPhoneTest.inject(rampUsers(200) over (200 seconds)))  //Phone call
+  setUp(obPhoneCall.outboundPhoneTest.inject(rampUsers(200) over (200 seconds)))  //Phone call
   //setUp(qm_chat.QmChatLoadTest.inject(rampUsers(200) over (200 seconds))) //Chat
-  setUp(obEmail.outboundEmailTest.inject(rampUsers(200)over(200 seconds))) //Email
+  //setUp(obEmail.outboundEmailTest.inject(rampUsers(200)over(200 seconds))) //Email
 
   //</editor-fold>
 
